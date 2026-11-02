@@ -55,7 +55,8 @@ namespace FASTER.Models
         private bool   _logObjectNotFound       = true;      // logging enabled
         private bool   _skipDescriptionParsing  = false;     // parse description.ext
         private bool   ignoreMissionLoadErrors  = false;     // do not ingore errors
-        private int    armaUnitsTimeout         = 30; 	     // Defines how long the player will be stuck connecting and wait for armaUnits data. Player will be notified if timeout elapsed and no units data was received
+        private bool   allowZeusCompositionScripts = false;  // false = leave zeusCompositionScriptLevel at the game default (1 = attributes only)
+        private int    armaUnitsTimeout        = 30; 	     // Defines how long the player will be stuck connecting and wait for armaUnits data. Player will be notified if timeout elapsed and no units data was received
         private int    queueSizeLogG            = 1000000; 	 // if a specific players message queue is larger than 1MB and '#monitor' is running, dump his messages to a logfile for analysis
         private string forcedDifficulty         = "Custom";  // By default forcedDifficulty is only applying Custom
 
@@ -431,6 +432,16 @@ namespace FASTER.Models
             {
                 ignoreMissionLoadErrors = value;
                 RaisePropertyChanged(nameof(IgnoreMissionLoadErrors));
+            }
+        }
+
+        public bool AllowZeusCompositionScripts
+        {
+            get => allowZeusCompositionScripts;
+            set
+            {
+                allowZeusCompositionScripts = value;
+                RaisePropertyChanged(nameof(AllowZeusCompositionScripts));
             }
         }
 
@@ -980,8 +991,9 @@ namespace FASTER.Models
                           + $"class AdvancedOptions\r\n{{\r\n"
                           + $"\tLogObjectNotFound = {logObjectNotFound};\t\t// When false to skip logging 'Server: Object not found messages'.\r\n"
                           + $"\tSkipDescriptionParsing = {skipDescriptionParsing};\t\t// When true to skip parsing of description.ext/mission.sqm. Will show pbo filename instead of configured missionName. OverviewText and such won't work, but loading the mission list is a lot faster when there are many missions.\r\n"
-                          + $"\tignoreMissionLoadErrors = {ignoreMissionLoadErrors};\t\t// When set to true, the mission will load no matter the amount of loading errors. If set to false, the server will abort mission's loading and return to mission selection.\r\n"
+                          + $"\tignoreMissionLoadErrors = {(ignoreMissionLoadErrors ? "1" : "0")};\t\t// When set to 1, the mission will load no matter the amount of loading errors. If set to 0, the server will abort mission's loading and return to mission selection.\r\n"
                           + "};\r\n"
+                          + (allowZeusCompositionScripts ? "zeusCompositionScriptLevel = 2;\t\t// Zeus compositions may run all scripts, including init scripts. A mission's description.ext setting takes priority.\r\n" : "")
                           + $"forcedDifficulty = \"{forcedDifficulty}\";\t\t\t// Forced difficulty (Recruit, Regular, Veteran, Custom)\r\n"
                           + "\r\n"
                           + "// TIMEOUTS\r\n"

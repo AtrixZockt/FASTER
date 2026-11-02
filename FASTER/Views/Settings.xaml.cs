@@ -166,7 +166,7 @@ namespace FASTER.Views
         }
 
         private void IUpdateApp_OnClick(object sender, RoutedEventArgs e)
-        { AutoUpdater.Start("https://raw.githubusercontent.com/Foxlider/FASTER/master/FASTER_Version.xml"); }
+        { AutoUpdater.Start("https://raw.githubusercontent.com/AtrixZockt/FASTER/master/FASTER_Version.xml"); }
 
         private void APIKeyButton_Click(object sender, RoutedEventArgs e)
         { Functions.OpenBrowser("https://steamcommunity.com/dev/apikey"); }

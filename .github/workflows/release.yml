@@ -241,7 +241,7 @@ jobs:
   # PUBLISH TO WINGET (tagged releases only)
   winget:
     needs: release
-    if: github.ref_type == 'tag'
+    if: github.ref_type == 'tag' && github.repository == 'Foxlider/FASTER'
     runs-on: windows-latest
     steps:
       # Requires forked winget-pkgs: https://github.com/microsoft/winget-pkgs to the same account as this project
